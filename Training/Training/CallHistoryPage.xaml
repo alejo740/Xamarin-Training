@@ -1,7 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:local="clr-namespace:Training;assembly=Training"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Training.MainPage">
+             x:Class="Training.CallHistoryPage">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness"
                     iOS="20, 40, 20, 20"
@@ -13,11 +14,7 @@
                      HorizontalOptions="FillAndExpand"
                      Orientation="Vertical"
                      Spacing="15">
-            <Label Text="Enter a Phoneword:" />
-            <Entry x:Name="phoneNumberText" Text="1-855-XAMARIN" />
-            <Button x:Name="translateButon" Text="Translate"/>
-            <Button x:Name="callButton" Text="Call" IsEnabled="false"/>
-            <Button x:Name="callHistoryButton" Text="Call History" IsEnabled="false" />
+            <ListView ItemsSource="{x:Static local:App.PhoneNumbers}" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

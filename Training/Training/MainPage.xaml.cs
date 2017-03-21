@@ -14,9 +14,36 @@ namespace Training
         public MainPage()
         {
             InitializeComponent();
+
+            translateButon.Clicked += new EventHandler(OnButtonEvent_Click);
+            callButton.Clicked += new EventHandler(OnButtonEvent_Click);
+            callHistoryButton.Clicked += new EventHandler(OnButtonEvent_Click);
         }
 
-        void OnTranslate(object sender, EventArgs e)
+        void OnButtonEvent_Click(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+
+            if (button.Equals(translateButon))
+            {
+                OnTranslate();
+            }
+            else if (button.Equals(callButton))
+            {
+                OnCall();
+            }
+            else if (button.Equals(callHistoryButton))
+            {
+                OnCallHistory();
+            }
+        }
+
+        private async void OnCallHistory()
+        {
+            await Navigation.PushAsync(new CallHistoryPage());
+        }
+
+        void OnTranslate()
         {
             translatedNumber = Core.PhonewordTranslator.ToNumber(phoneNumberText.Text);
             if (!string.IsNullOrWhiteSpace(translatedNumber))
@@ -31,7 +58,7 @@ namespace Training
             }
         }
 
-        async void OnCall(object sender, EventArgs e)
+        async void OnCall()
         {
             if (await this.DisplayAlert(
                     "Dial a Number",
@@ -41,7 +68,11 @@ namespace Training
             {
                 var dialer = DependencyService.Get<IDialer>();
                 if (dialer != null)
+                {
+                    App.PhoneNumbers.Add(translatedNumber);
+                    callHistoryButton.IsEnabled = true;
                     dialer.Dial(translatedNumber);
+                }
             }
         }
     }
